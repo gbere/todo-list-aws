@@ -225,13 +225,19 @@ class TestDatabaseFunctionsError(unittest.TestCase):
     def test_get_todo_error(self):
         print ('---------------------')
         print ('Start: test_get_todo_error')
-        # Testing file functions
         from unittest.mock import Mock
         from src.todoList import get_item
         self.table = table = Mock()
-        self.table.get_item.side_effect = Exception('Boto3 Exception')
+        self.table.get_item.side_effect = Exception('Im an exception')
         get_item("", self.dynamodb)
         print ('End: test_get_todo_error')
+
+    def test_put_todo_error(self):
+        print ('---------------------')
+        print ('Start: test_put_todo_error')
+        from src.todoList import put_item
+        self.assertRaises(Exception, put_item("", self.dynamodb))
+        print ('End: test_put_todo_error')
         
 if __name__ == '__main__':
     unittest.main()
