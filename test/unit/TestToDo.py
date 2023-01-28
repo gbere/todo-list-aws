@@ -221,7 +221,6 @@ class TestDatabaseFunctionsError(unittest.TestCase):
         self.is_local = 'true'
         print ('End: setUp')
         
-        
     def test_get_todo_error(self):
         print ('---------------------')
         print ('Start: test_get_todo_error')
@@ -238,6 +237,13 @@ class TestDatabaseFunctionsError(unittest.TestCase):
         from src.todoList import put_item
         self.assertRaises(Exception, put_item("", self.dynamodb))
         print ('End: test_put_todo_error')
+        
+    def test_update_todo_error(self):
+        print ('---------------------')
+        print ('Start: test_update_todo_error')
+        from src.todoList import update_item
+        self.assertRaises(Exception, update_item("", "", "false", self.dynamodb))
+        print ('End: test_update_todo_error')
         
 if __name__ == '__main__':
     unittest.main()
