@@ -12,3 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.1] - 2023-01-25
 ### Fixed
 - Corregido el requerimiento de la covertura mínima
+
+## [1.0.2] - 2023-01-28
+### Fixed
+- Corregido el requerimiento que para pasar de siguiente etapa de las pruebas unitarias debía de superarlas
+- Covertura mejorada
