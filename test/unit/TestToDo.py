@@ -117,6 +117,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Response GetItems' + str(result))
         self.assertTrue(len(result) == 1)
         self.assertTrue(result[0]['text'] == self.text)
+        # Test get_table with dynamodb=None
+        get_items()
         print ('End: test_list_todo')
 
 
@@ -198,6 +200,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         # Testing file functions
         self.assertRaises(TypeError, delete_item("", self.dynamodb))
         print ('End: test_delete_todo_error')
+        
 
 @mock_dynamodb
 class TestDatabaseFunctionsError(unittest.TestCase):
@@ -219,7 +222,7 @@ class TestDatabaseFunctionsError(unittest.TestCase):
         """Create the mock database and table"""
         self.dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
         self.is_local = 'true'
-        # Add an mocked exeption
+        # Add a mocked exeption
         from unittest.mock import Mock
         self.table = table = Mock()
         self.table.get_item.side_effect = Exception('Im an exception')
