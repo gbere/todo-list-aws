@@ -219,15 +219,16 @@ class TestDatabaseFunctionsError(unittest.TestCase):
         """Create the mock database and table"""
         self.dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
         self.is_local = 'true'
+        # Add an mocked exeption
+        from unittest.mock import Mock
+        self.table = table = Mock()
+        self.table.get_item.side_effect = Exception('Im an exception')
         print ('End: setUp')
         
     def test_get_todo_error(self):
         print ('---------------------')
         print ('Start: test_get_todo_error')
-        from unittest.mock import Mock
         from src.todoList import get_item
-        self.table = table = Mock()
-        self.table.get_item.side_effect = Exception('Im an exception')
         get_item("", self.dynamodb)
         print ('End: test_get_todo_error')
 
