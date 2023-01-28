@@ -245,6 +245,13 @@ class TestDatabaseFunctionsError(unittest.TestCase):
         from src.todoList import update_item
         self.assertRaises(Exception, update_item("", "", "false", self.dynamodb))
         print ('End: test_update_todo_error')
+
+    def test_delete_todo_error(self):
+        print ('---------------------')
+        print ('Start: test_delete_todo_error')
+        from src.todoList import delete_item
+        self.assertRaises(Exception, delete_item("", self.dynamodb))
+        print ('End: test_delete_todo_error')
         
 if __name__ == '__main__':
     unittest.main()
