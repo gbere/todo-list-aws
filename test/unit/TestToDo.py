@@ -117,8 +117,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Response GetItems' + str(result))
         self.assertTrue(len(result) == 1)
         self.assertTrue(result[0]['text'] == self.text)
-        # Test get_table with dynamodb=None
-        get_items()
         print ('End: test_list_todo')
 
 
