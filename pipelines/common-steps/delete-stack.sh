@@ -2,5 +2,4 @@
 
 set -x
 
-export AWS_DEFAULT_REGION=us-east-1
-aws cloudformation delete-stack --stack-name todo-list-aws-${ENVIRONMENT}
+aws cloudformation delete-stack --stack-name todo-list-aws-${ENVIRONMENT} --region us-east-1
