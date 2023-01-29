@@ -17,3 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Corregido el requerimiento que para pasar de siguiente etapa de las pruebas unitarias debía de superarlas
 - Covertura mejorada
+
+## [1.0.3] - 2023-01-23
+### Fixed
+- Corregido el requerimiento de limpieza del stack
