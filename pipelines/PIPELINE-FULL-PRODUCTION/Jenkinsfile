@@ -34,8 +34,6 @@ pipeline {
     }
     post { 
         always { 
-            echo 'Clean application and delete stack'
-            sh "bash pipelines/common-steps/delete-stack.sh"
             echo 'Clean env: delete dir'
             cleanWs()
         }
