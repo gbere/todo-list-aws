@@ -10,10 +10,11 @@ def translate(event, context):
         item['text'], event['pathParameters']['lang']
     )
 
-    if translate:
+    if item and translate:
+        item['text'] = translate
         response = {
             "statusCode": 200,
-            "body": json.dumps(translate,
+            "body": json.dumps(item,
                                cls=decimalencoder.DecimalEncoder)
         }
     else:
