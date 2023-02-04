@@ -198,7 +198,38 @@ class TestDatabaseFunctions(unittest.TestCase):
         # Testing file functions
         self.assertRaises(TypeError, delete_item("", self.dynamodb))
         print ('End: test_delete_todo_error')
+
+    def test_get_translate(self):
+        print ('---------------------')
+        print ('Start: test_get_translate')   
+        from src.todoList import get_translate
+        from src.todoList import get_item
+        from src.todoList import put_item
         
+        translateSeftTextEn = get_translate(self.text, 'en')
+        print ('translateSeftTextEn: ' + str(translateSeftTextEn))
+        translateSeftTextFr = get_translate(self.text, 'fr')
+        print ('translateSeftTextFr: ' + str(translateSeftTextFr))
+
+        # Testing file functions
+        # Table mock
+        responsePut = put_item(self.text, self.dynamodb)
+        print ('Response put_item:' + str(responsePut))
+        idItem = json.loads(responsePut['body'])['id']
+        print ('Id item:' + idItem)
+        self.assertEqual(200, responsePut['statusCode'])
+        responseGet = get_item(
+                idItem,
+                self.dynamodb)
+        print ('Response Get:' + str(responseGet))
+        
+        translateResponseTextEn = get_translate(responseGet['text'], 'en')
+        print ('translateResponseTextEn: ' + str(translateResponseTextEn))
+        translateResponseTextFr = get_translate(responseGet['text'], 'fr')
+        print ('translateSeftTextFr: ' + str(translateResponseTextFr))
+        self.assertEqual(translateSeftTextEn, translateResponseTextEn)
+        self.assertEqual(translateSeftTextFr, translateResponseTextFr)
+        print ('End: test_get_translate')   
 
 @mock_dynamodb
 class TestDatabaseFunctionsError(unittest.TestCase):
