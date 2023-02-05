@@ -4,8 +4,11 @@ import unittest
 from urllib.request import urlopen
 import requests
 import json
+import sys
 
 import pytest
+
+sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../../src")
 
 BASE_URL = os.environ.get("BASE_URL")
 #BASE_URL = "https://m0qwfec693.execute-api.us-east-1.amazonaws.com/Prod"
@@ -48,8 +51,8 @@ class TestApi(unittest.TestCase):
             response.status_code, 200, "Error en la petición API a {url}"
         )
         self.assertTrue(response.json())
-        
         print('End - integration test List TODO')
+        
     def test_api_addtodo(self):
         print('---------------------------------------')
         print('Starting - integration test Add TODO')
@@ -75,6 +78,7 @@ class TestApi(unittest.TestCase):
             response.status_code, 200, "Error en la petición API a {url}"
         )
         print('End - integration test Add TODO')
+        
     def test_api_gettodo(self):
         print('---------------------------------------')
         print('Starting - integration test Get TODO')
@@ -166,6 +170,7 @@ class TestApi(unittest.TestCase):
             response.status_code, 200, "Error en la petición API a {url}"
         )
         print('End - integration test Update TODO')
+        
     def test_api_deletetodo(self):
         print('---------------------------------------')
         print('Starting - integration test Delete TODO')
@@ -200,3 +205,62 @@ class TestApi(unittest.TestCase):
             response.status_code, 404, "Error en la petición API a {url}"
         )
         print('End - integration test Delete TODO')
+
+    def test_api_get_translate(self):
+        print('---------------------------------------')
+        print('Starting - integration test Get translate')
+        from todoList import get_translate
+        
+        #Add TODO
+        url = BASE_URL+"/todos"
+        text = "prueba de integración de la función de traducción"
+        data = {
+         "text": text
+        }
+        response = requests.post(url, data=json.dumps(data))
+        json_response = response.json()
+        print('Response Add Todo: '+ str(json_response))
+        jsonbody= json.loads(json_response['body'])
+        ID_TODO = jsonbody['id']
+        print ('ID todo:'+ID_TODO)
+        self.assertEqual(
+            response.status_code, 200, "HTTP code error"
+        )
+        self.assertEqual(
+            jsonbody['text'], text, "The text of jsonbody it's wrong"
+        )
+        
+        #Test GET Translate en
+        print("Testing 'en' lang...")
+        urlEn = BASE_URL+"/todos/"+ID_TODO+"/en"
+        response = requests.get(urlEn)
+        json_response = response.json()
+        print('Response Get Todo: '+ str(json_response))
+        self.assertEqual(
+            response.status_code, 200, "Error en la petición API a {url}"
+        )
+        textEn = get_translate(text, 'en')
+        self.assertEqual(
+            json_response['text'], textEn, "The text of jsonbody it's wrong"
+        )
+        
+        print("Testing 'fr' lang...")
+        urlFr = BASE_URL+"/todos/"+ID_TODO+"/fr"
+        response = requests.get(urlFr)
+        json_response = response.json()
+        print('Response Get Todo: '+ str(json_response))
+        self.assertEqual(
+            response.status_code, 200, "HTTP code error"
+        )
+        textFr = get_translate(text, 'fr')
+        self.assertEqual(
+            json_response['text'], textFr, "The text of jsonbody it's wrong"
+        )
+        
+        #Delete TODO to restore state
+        url = BASE_URL+"/todos/"+ID_TODO
+        response = requests.delete(url)
+        self.assertEqual(
+            response.status_code, 200, "HTTP code error"
+        )
+        print('End - integration test Get translate')
